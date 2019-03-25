@@ -1,0 +1,109 @@
+<odoo>
+  
+  <template id="ticke_clien_devo">
+    <t t-call="web.html_container">
+      <t t-call="web.basic_layout">
+         <t t-foreach="docs" t-as="doc">
+          <div class="page">
+            <div>
+              <span>Daniel Robleas</span>
+              <span  style="text-align:right">fecha:
+                 <span t-field="doc.fecha_actual" style="margin-top:2em; font-size:17px;"/>  
+              </span>
+
+            </div>
+            <div style="text-align: center">
+               <span>
+                 Zapateria Platino S.A de C.V <br/>
+                  Prol.Pino Suares 1893 Col El vigia <br/>
+                  Zapopan,Jalisco C.P.45140 <br/>
+                  RFC:ZPL1212183K1
+                  </span>
+            </div>
+            <br/>
+            <div>
+              <di>
+                <span>NOTA DE DEVOLUCION:
+                  <span t-field="doc.id" style="text-align:center; margin-top:2em; font-size:17px;"/>
+                </span>
+              </di>
+            <div> 
+                <span>No.Cliente:
+                  
+                </span>
+              </div>
+              <div>
+                 <span>Nombre cliente :
+                   <span t-field="doc.nombre_clien" style="text-align:center; margin-top:2em; font-size:17px;"/>     
+                </span> 
+              </div> 
+            </div>
+          </div>
+          <div>
+            <span>Articulos aceptados 
+              <span t-field="doc.total_acept" style="text-align:center; margin-top:2em; font-size:17px;"/>
+            </span>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th class="text-center">Estilo</th>
+                  <th class="text-center">Talla</th>
+                  <th class="text-center">Cantidad</th>
+                  <th class="text-center">Importe</th>
+
+                </tr>
+              </thead>
+              <tbody class="sale_tbody">
+                <t t-foreach="doc.tabla" t-as="dl">
+                  <tr>
+                    <td>
+                      <span t-field="dl.producto"/>
+                    </td>
+                   <td class="text-center">
+                      <span></span>
+                    </td> 
+                    <td class="text-center">
+                       <span t-field="dl.cantidad" />
+                    </td>
+                   <td class="text-center">
+                      <span t-field="dl.producto.lst_price" />
+                    </td> 
+                  </tr>
+                </t>
+              </tbody>
+            </table>          
+          </div>
+      </t>
+    </t>
+  </t>
+  </template>
+    
+  <record id="paperformat_ticket" model="report.paperformat">
+    <field name="name">Point Of Sale Receipt</field>
+    <field name="default" eval="True"/>
+    <field name="format">custom</field>
+    <field name="page_height">160</field>
+    <field name="page_width">75</field>
+    <field name="orientation">Portrait</field>
+    <field name="margin_top">3</field>
+    <field name="margin_bottom">3</field>
+    <field name="margin_left">3</field>
+    <field name="margin_right">3</field>
+    <field name="header_line" eval="False" />
+    <field name="header_spacing">3</field>
+    <field name="dpi">130</field>
+  </record>
+
+  <report
+            string="Tickets"
+            id="action_imp_tickets"
+            model="return.clien"
+            report_type="qweb-pdf"
+            name="return_products.ticke_clien_devo"
+            file="return_products.ticket_cl_temp"
+            paperformat="return_products.paperformat_ticket"
+
+            
+  />
+
+</odoo>
