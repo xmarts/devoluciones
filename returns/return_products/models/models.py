@@ -55,7 +55,7 @@ class devolucion_produ(models.Model):
 					self.pedido = obj_order.origin		
 			if obj_order.picking_type_code == 'outgoing':
 
-				if  dev.fecha_limit > self.fecha_actual :	
+				if  self.fecha_actual > dev.fecha_limit:	
 					if obj_serie:	
 						obj_table = self.env['product.validar']
 						if self.tabla:
