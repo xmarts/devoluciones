@@ -279,6 +279,6 @@ class tabla(models.Model):
 	pedido_venta = fields.Char(string="Pedido")
 	fecha_compra = fields.Datetime(string="Fecha")
 	estatus = fields.Char(string="Estatus")
-	motivo = fields.Char(string="Motivo")
-	pregresar_proveedor = fields.Boolean(string="Regresar ", default=False)
+	motivo = fields.Selection([('1','No son los mismo'),('2','Par es uno y uno')],string="Motivo")
+	pregresar_proveedor = fields.Boolean(string="Regresar ", default=True)
 	cant_devo = fields.Float(string="cantidad a devolver")
