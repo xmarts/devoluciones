@@ -15,6 +15,18 @@
    	 	 	</data>
    		</field>
 	</record> 
+	<record id="inherit_date_limited" model="ir.ui.view">
+  		<field name="name">date-limited</field>
+ 	   	<field name="model">sale.order</field>
+       	<field name="inherit_id" ref="sale.view_order_form" />
+       	<field name="arch" type="xml">
+   		 	<data>
+     			 <xpath expr="//field[@name='payment_term_id']" position="after"> 
+       			 	<field name="return_supplier"/>
+      			</xpath>
+   	 	 	</data>
+   		</field>
+	</record> 
 
 <!--campos para ver si es cliente o proveedor-->
 
@@ -110,11 +122,21 @@
       <field name='type'>ir.actions.act_window</field>
       <field name='res_model'>return.clien</field>
       <field name='view_type'>form</field>
-      <field name='view_mode'>tree,form</field>
+      <field name='view_model'>tree,form</field>
     </record>
 
-
-
+   <record id="view_tree_devo" model="ir.ui.view">
+          <field name="name">return.clien.tree</field>
+            <field name="model">return.clien</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="id"/>
+                    <field name="nombre_clien"/>
+                    <field name="fecha_actual"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+      </record>
 
     <menuitem name="Devoluciones" id="menu-item1" parent="return_products.menu_root" />
     <menuitem name="clientes" id="menu-item2" parent="menu-item1" action="action_modulo_odoo" />

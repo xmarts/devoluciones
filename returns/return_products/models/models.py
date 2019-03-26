@@ -9,6 +9,7 @@ class fecha_limited(models.Model):
 	_inherit = 'sale.order'
 
 	fecha_limit = fields.Date(string="date limtit return")
+	return_supplier = fields.Boolean(string="supplier return")
 
 
 class opciondevolucion(models.Model):
@@ -54,8 +55,7 @@ class devolucion_produ(models.Model):
 				else:
 					self.pedido = obj_order.origin		
 			if obj_order.picking_type_code == 'outgoing':
-
-				if  self.fecha_actual > dev.fecha_limit:	
+				if  self.fecha_actual > dev.fecha_limit:
 					if obj_serie:	
 						obj_table = self.env['product.validar']
 						if self.tabla:
@@ -149,8 +149,10 @@ class devolucion_produ(models.Model):
 					self.name_canceled = self.env.user.id			
 						
 			else:
-				raise ValidationError('Esta serie pertenece a una compra')							
-	
+				if dev.return_supplier == False:
+					raise ValidationError('si')
+				else:
+					raise ValidationError('no')	
      ########## parte del funcionamiento para compras   ##############################			
 		else :
 			if self.tipo_devo == 'de':
