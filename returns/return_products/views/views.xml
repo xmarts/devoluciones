@@ -43,7 +43,7 @@
       <field name="arch" type="xml">
 	        <form>
 	        	<header>
-	        		<button name="dra"  states="reject" type="object"  string="Draft"  class="oe_highlight" />
+	        		<button name="dra"  states="approve" type="object"  string="Draft"  class="oe_highlight" />
 	        		<button name="confirmar" states="draft"  type="object" string="Approved" class="oe_highlight" />
 	        		<button name="buscar" states="draft" type="object" string="buscar" class="btn-primary"/>   
 	        		<button name="rev" states="approve" type="object"  string="Review piece" class="oe_highlight"/>
