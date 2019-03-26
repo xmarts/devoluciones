@@ -72,6 +72,7 @@ class devolucion_produ(models.Model):
 														'fecha_compra': obj_serie.date,
 														'pedido_venta':obj_order.origin,
 														'estatus':obj_serie.state,
+														'pregresar_proveedor' : True,
 														'tabla_1': self.id,
 														})
 								if obj_line:
@@ -89,6 +90,7 @@ class devolucion_produ(models.Model):
 															'fecha_compra': obj_serie.date,
 															'pedido_venta':obj_order.origin,
 															'estatus':obj_serie.state,
+															'pregresar_proveedor' : True,
 															'tabla_1': self.id,
 															})
 							if obj_line:
@@ -116,6 +118,7 @@ class devolucion_produ(models.Model):
 														'fecha_compra': obj_serie.date,
 														'pedido_venta':obj_order.origin,
 														'estatus':obj_serie.state,
+														'pregresar_proveedor' : True,
 														'tabla_1': self.id,
 														})
 								if obj_line:
@@ -133,6 +136,7 @@ class devolucion_produ(models.Model):
 															'fecha_compra': obj_serie.date,
 															'pedido_venta':obj_order.origin,
 															'estatus':obj_serie.state,
+															'pregresar_proveedor' : True,
 															'tabla_1': self.id,
 															})
 							if obj_line:
@@ -175,6 +179,7 @@ class devolucion_produ(models.Model):
 														'fecha_compra': obj_serie.date,
 														'pedido_venta':obj_order.origin,
 														'estatus':obj_serie.state,
+														'pregresar_proveedor' : True,
 														'tabla_1': self.id,
 														})
 								if obj_line:
@@ -192,6 +197,7 @@ class devolucion_produ(models.Model):
 															'fecha_compra': obj_serie.date,
 															'pedido_venta':obj_order.origin,
 															'estatus':obj_serie.state,
+															'pregresar_proveedor' : True,
 															'tabla_1': self.id,
 															})
 							if obj_line:
@@ -235,14 +241,22 @@ class devolucion_produ(models.Model):
 		obj_serie = self.env['stock.move.line'].search([('lot_id', '=', self.busqueda)], limit=1)
 		obj_order = self.env['stock.picking'].search([('name', '=', obj_serie.reference)], limit=1)
 		if self.contador == 0:
-			if obj_order.picking_type_code == 'outgoing':
-				pick_t_id = self.env['stock.picking.type'].search([('client_devo','=',True)])
-				obj_order.write({'picking_type_id':pick_t_id.return_picking_type_id.id})
-				self.write({'state':'approve'})
+			if self.tabla.cant_devo != 0:
+				if obj_serie.qty_done >= self.tabla.cant_devo :
+					raise ValidationError('si')
+
+				else:
+					raise ValidationError('la cantidad es menor')	
+					"""if obj_order.picking_type_code == 'outgoing':
+						pick_t_id = self.env['stock.picking.type'].search([('client_devo','=',True)])
+						obj_order.write({'picking_type_id':pick_t_id.return_picking_type_id.id})
+						self.write({'state':'approve'})
+					else:
+						pick_t_id = self.env['stock.picking.type'].search([('provee_devo','=',True)])
+						obj_order.write({'picking_type_id':pick_t_id.return_picking_type_id.id})
+						self.write({'state':'approve'})"""
 			else:
-				pick_t_id = self.env['stock.picking.type'].search([('provee_devo','=',True)])
-				obj_order.write({'picking_type_id':pick_t_id.return_picking_type_id.id})
-				self.write({'state':'approve'})
+				raise ValidationError("registre una cantidad")			
 		else:
 			raise ValidationError('Existen productos que no pertenecen al mismo pedido, por favor verifique los productos')	
 
@@ -279,6 +293,17 @@ class tabla(models.Model):
 	pedido_venta = fields.Char(string="Pedido")
 	fecha_compra = fields.Datetime(string="Fecha")
 	estatus = fields.Char(string="Estatus")
-	motivo = fields.Selection([('1','No son los mismo'),('2','Par es uno y uno')],string="Motivo")
-	pregresar_proveedor = fields.Boolean(string="Regresar ", default=True)
+	motivo = fields.Many2one('add.motive','Motivo')
+	pregresar_proveedor = fields.Boolean(string="Regresar ")
 	cant_devo = fields.Float(string="cantidad a devolver")
+
+
+class AddMotive(models.Model):
+
+	_name = 'add.motive'
+	
+	_rec_name = 'name'
+
+	name = fields.Char( string = 'Motivo' )
+
+		
