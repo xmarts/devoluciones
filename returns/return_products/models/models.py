@@ -242,21 +242,19 @@ class devolucion_produ(models.Model):
 		obj_order = self.env['stock.picking'].search([('name', '=', obj_serie.reference)], limit=1)
 		if self.contador == 0:
 			if self.tabla.cant_devo != 0:
-				if obj_serie.qty_done >= self.tabla.cant_devo :
-					raise ValidationError('si')
-
-				else:
-					raise ValidationError('la cantidad es menor')	
-					"""if obj_order.picking_type_code == 'outgoing':
+				if obj_serie.qty_done >= self.tabla.cant_devo :	
+					if obj_order.picking_type_code == 'outgoing':
 						pick_t_id = self.env['stock.picking.type'].search([('client_devo','=',True)])
 						obj_order.write({'picking_type_id':pick_t_id.return_picking_type_id.id})
 						self.write({'state':'approve'})
 					else:
 						pick_t_id = self.env['stock.picking.type'].search([('provee_devo','=',True)])
 						obj_order.write({'picking_type_id':pick_t_id.return_picking_type_id.id})
-						self.write({'state':'approve'})"""
+						self.write({'state':'approve'})
+				else:
+					ValidationError('La cantidad es menor')		
 			else:
-				raise ValidationError("registre una cantidad")			
+				raise ValidationError("Registre una cantidad")			
 		else:
 			raise ValidationError('Existen productos que no pertenecen al mismo pedido, por favor verifique los productos')	
 
