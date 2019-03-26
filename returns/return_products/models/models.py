@@ -147,12 +147,8 @@ class devolucion_produ(models.Model):
 								self.codi_pos_clien = datos.partner_id.zip	
 					self.write({'state':'reject'})
 					self.name_canceled = self.env.user.id			
-						
 			else:
-				if dev.return_supplier == False:
-					raise ValidationError('si')
-				else:
-					raise ValidationError('no')	
+				raise ValidationError('Esta serie pertenece a una compra')
      ########## parte del funcionamiento para compras   ##############################			
 		else :
 			if self.tipo_devo == 'de':
