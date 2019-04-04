@@ -3,116 +3,104 @@
     
  <menuitem name="return" id="return_products.menu_root"/>
 <!--campo de fecha limited en la venta-->
-	<record id="inherit_date_limited" model="ir.ui.view">
-  		<field name="name">date-limited</field>
- 	   	<field name="model">sale.order</field>
-       	<field name="inherit_id" ref="sale.view_order_form" />
-       	<field name="arch" type="xml">
-   		 	<data>
-     			 <xpath expr="//field[@name='validity_date']" position="after"> 
-       			 	<field name="fecha_limit"/>
-      			</xpath>
-   	 	 	</data>
-   		</field>
-	</record> 
-	<record id="inherit_date_limited" model="ir.ui.view">
-  		<field name="name">date-limited</field>
- 	   	<field name="model">sale.order</field>
-       	<field name="inherit_id" ref="sale.view_order_form" />
-       	<field name="arch" type="xml">
-   		 	<data>
-     			 <xpath expr="//field[@name='payment_term_id']" position="after"> 
-       			 	<field name="return_supplier"/>
-      			</xpath>
-   	 	 	</data>
-   		</field>
-	</record> 
+  <record id="inherit_date_limited" model="ir.ui.view">
+      <field name="name">date-limited</field>
+      <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+        <data>
+           <xpath expr="//field[@name='confirmation_date']" position="after"> 
+              <field name="fecha_limit"/>
+            </xpath>
+        </data>
+      </field>
+  </record> 
 
 <!--campos para ver si es cliente o proveedor-->
 
-	<record id="inherit_return_cliente" model="ir.ui.view">
-  		<field name="name">return.cliente</field>
-  		<field name="model">stock.picking.type</field>
-  		<field name="inherit_id" ref="stock.view_picking_type_form"/>
- 		<field name="arch" type="xml">
-  			<data>
-      			<xpath expr="//field[@name='show_reserved']" position="after">
-        			<field name="client_devo"/>
-        			<field name="provee_devo"/>
-      			</xpath>
-    		</data>  
- 		 </field> 
-	</record>
+  <record id="inherit_return_cliente" model="ir.ui.view">
+      <field name="name">return.cliente</field>
+      <field name="model">stock.picking.type</field>
+      <field name="inherit_id" ref="stock.view_picking_type_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='show_reserved']" position="after">
+              <field name="client_devo"/>
+              <field name="provee_devo"/>
+            </xpath>
+        </data>  
+     </field> 
+  </record>
 
 
 
 
-<!-- menut principal de devoluciones-->	
+<!-- menut principal de devoluciones--> 
     
     <record id="action_modulo_data" model="ir.ui.view">
       <field name="name">Devoluciones</field>
       <field name="model">return.clien</field>
       <field name="arch" type="xml">
-	        <form>
-	        	<header>
-	        		<button name="dra"  states="approve" type="object"  string="Draft"  class="oe_highlight" />
-	        		<button name="confirmar" states="draft"  type="object" string="Approved" class="oe_highlight" />
-	        		<button name="buscar" states="draft" type="object" string="buscar" class="btn-primary"/>   
-	        		<button name="rev" states="approve" type="object"  string="Review piece" class="oe_highlight"/>
-	        		<button name="ste" states="review" type="object"  string="Good condition" class="oe_highlight"/>
-	        		<button name="defa" states="state" type="object"  string="Manufacturing" class="oe_highlight"/>
-	        		<button name="proce" states="default" type="object"  string="Processing" class="oe_highlight"/>
-	        		<field name="state" widget="statusbar"/>
+          <form>
+            <header>
+              <button name="confirmar" states="draft"  type="object" string="Approved" class="oe_highlight" />
+              <button name="buscar" states="draft" type="object" string="buscar" class="btn-primary"/>   
+              <button name="rev" states="approve" type="object"  string="Review piece" class="oe_highlight"/>
+              <button name="ste" states="review" type="object"  string="Good condition" class="oe_highlight"/>
+              <button name="defa" states="state" type="object"  string="Manufacturing" class="oe_highlight"/>
+              <button name="proce" states="default" type="object"  string="Processing" class="oe_highlight"/>
+              <field name="state" widget="statusbar"/>
 
-	        	</header>
-	        	<group>
-	        		<group>
-	        			<field name="tipo_devo"/>
-	     	        	<field name="busqueda"/>			
-	        			<field name="num_clie"/>
-	        			<field name="nombre_clien"/>
-	        			<field name="pedido" invisible="1"/>
-	        			<field name="contador" invisible="1"/>
+            </header>
+            <group>
+              <group>
+                <field name="tipo_devo"/>
+                  <field name="busqueda"/>      
+                <field name="num_clie"/>
+                <field name="nombre_clien"/>
+                <field name="pedido"  invisible="1"/>
+                <field name="contador" invisible="1"/>
 
-	        		</group>
-	        		<group>
+              </group>
+              <group>
 
-	        			<field name="fecha_actual" readonly="1"/>
-	        			<field name="estado_clien"/>
-	        			<field name="cuidad_clien"/> 
-	        			<field name="codi_pos_clien"/>
-	        			<field name="name_canceled"/>
-	        			<field name="rel" invisible="1"/>
-	        		</group>
+                <field name="fecha_actual" readonly="1"/>
+                <field name="estado_clien"/>
+                <field name="cuidad_clien"/> 
+                <field name="codi_pos_clien"/>
+                        <field name="salida" />
+                        <field name="name_canceled"/>
 
-	        	</group>
-	        	<notebook>
-	                <page string="Productos a Validar">
-	                	<field name="tabla" nolabel="1">
-		                	<tree string="Product order" editable="bottom">
-		                		<field name="producto"/>
-		                		<field name="cantidad"/>
-		                		<field name="talla"/>
-		                		<field name="serie"/>
-		                		<field name="pedido_venta"/>
-		                		<field name="fecha_compra"/>
-		                		<field name="estatus"/>
-		                		<field name="motivo"/>
-		                		<field name="cant_devo"/>
-		                		<field name="pregresar_proveedor" readonly="1"/>
+              </group>
 
-		                	</tree>
-		               	</field>
-		                <group class="oe_right">
+            </group>
+            <notebook>
+                  <page string="Productos a Validar">
+                    <field name="tabla" nolabel="1">
+                      <tree string="Product order" editable="bottom">
+                        <field name="producto"/>
+                        <field name="cantidad"/>
+                        <field name="talla"/>
+                        <field name="serie"/>
+                        <field name="pedido_venta"/>
+                        <field name="fecha_compra"/>
+                        <field name="estatus"/>
+                        <field name="motivo"/>
+                        <field name="cant_devo" readonly="1"/> 
+                        <field name="pregresar_proveedor" readonly="1"/>
+
+                      </tree>
+                    </field>
+                    <group class="oe_right">
                            <field name="total_acept"/>
                            <field name="total_recha"/>
 
-                        </group>	
-		          		
-	  	            </page>
-	  	            
-	        	</notebook>
-	        </form>
+                        </group>  
+                  
+                  </page>
+                  
+            </notebook>
+          </form>
       </field>
     </record>
 
